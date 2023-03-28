@@ -1,9 +1,127 @@
-import React from 'react'
+import { Box, Button, TextField } from "@mui/material";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import LoadingButton from "@mui/lab/LoadingButton";
+import authApi from "../api/authApi";
 
 const Signup = () => {
-  return (
-    <div>Signup</div>
-  )
-}
+    // initialize navigation hook
+    const navigate = useNavigate();
 
-export default Signup
+    // initialize state variables and setter functions
+    const [loading, setLoading] = useState(false);
+    const [usernameErrText, setUsernameErrText] = useState("");
+    const [passwordErrText, setPasswordErrText] = useState("");
+    const [confirmPasswordErrText, setConfirmPasswordErrText] = useState("");
+
+    // handle form submission
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // prevent default form submission behavior
+        setUsernameErrText(""); // reset error text for username field
+        setPasswordErrText(""); // reset error text for password field
+        setConfirmPasswordErrText(""); // reset error text for confirm password field
+
+        // get input values from form data
+        const data = new FormData(e.target);
+        const username = data.get("username").trim();
+        const password = data.get("password").trim();
+        const confirmPassword = data.get("confirmPassword").trim();
+
+        let err = false; // initialize error flag
+
+        // check if input values are valid
+        if (username === "") {
+            err = true;
+            setUsernameErrText("Please fill this field");
+        }
+        if (password === "") {
+            err = true;
+            setPasswordErrText("Please fill this field");
+        }
+        if (confirmPassword === "") {
+            err = true;
+            setConfirmPasswordErrText("Please fill this field");
+        }
+        if (password !== confirmPassword) {
+            err = true;
+            setConfirmPasswordErrText("Confirm password not match");
+        }
+
+        if (err) return; // if there are errors, return and do not submit form
+
+        setLoading(true); // set loading state to true
+
+        try {
+          // call signup API and get response
+          const res = await authApi.signup({
+            username: username, 
+            password: password, 
+            confirmPassword: confirmPassword
+          })
+          setLoading(false); // set loading state to false
+                localStorage.setItem("token", res.token); // save token to local storage
+                navigate("/"); // navigate to home page
+
+        
+        } catch (err) {
+          const errors = err.response.data.errors
+          errors.forEach(e => {
+            if (e.param === 'username') {
+              setUsernameErrText(e.msg)
+            }
+            if (e.param === 'password') {
+              setPasswordErrText(e.msg)
+            }
+            if (e.param === 'confirmPassword') {
+              setConfirmPasswordErrText(e.msg)
+            }
+          })
+          setLoading(false) // set loading state to false
+        }
+    };
+
+    return (
+        <>
+            <Box
+                component="form"
+                sx={{ mt: 1 }}
+                onSubmit={handleSubmit}
+                noValidate // disable default form validation
+            >
+                <TextField margin="normal" required fullWidth id="username" label="Username" name="username" disabled={loading} error={usernameErrText !== ""} helperText={usernameErrText} />
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="password"
+                    label="Password"
+                    name="password"
+                    type="password"
+                    disabled={loading}
+                    error={passwordErrText !== ""}
+                    helperText={passwordErrText}
+                />
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="confirmPassword"
+                    label="Confirm Password"
+                    name="confirmPassword"
+                    type="password"
+                    disabled={loading}
+                    error={confirmPasswordErrText !== ""}
+                    helperText={confirmPasswordErrText}
+                />
+                <LoadingButton sx={{ mt: 3, mb: 2 }} variant="outlined" fullWidth color="success" type="submit" loading={loading}>
+                    Signup
+                </LoadingButton>
+            </Box>
+            <Button component={Link} to="/login" sx={{ textTransform: "none" }}>
+                Already have an account? Login
+            </Button>
+        </>
+    );
+};
+
+export default Signup;

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import authUtils from "../../utils/authUtils";
 import Loading from "../common/Loading";
 import Sidebar from "../common/Sidebar";
-// import { setUser } from '../../redux/features/userSlice'
+import { setUser } from '../../redux/features/userSlice'
 
 const AppLayout = () => {
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ const AppLayout = () => {
                 navigate("/login");
             } else {
                 // if user is authenticated, save user to Redux store and stop loading
-                // dispatch(setUser(user))
+                dispatch(setUser(user))
                 setLoading(false);
             }
         };
