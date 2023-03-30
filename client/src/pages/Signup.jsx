@@ -5,31 +5,29 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import authApi from "../api/authApi";
 
 const Signup = () => {
-    // initialize navigation hook
     const navigate = useNavigate();
 
-    // initialize state variables and setter functions
+    // Define state variables for loading and error messages
     const [loading, setLoading] = useState(false);
     const [usernameErrText, setUsernameErrText] = useState("");
     const [passwordErrText, setPasswordErrText] = useState("");
     const [confirmPasswordErrText, setConfirmPasswordErrText] = useState("");
 
-    // handle form submission
+    // Handle form submission
     const handleSubmit = async (e) => {
-        e.preventDefault(); // prevent default form submission behavior
-        setUsernameErrText(""); // reset error text for username field
-        setPasswordErrText(""); // reset error text for password field
-        setConfirmPasswordErrText(""); // reset error text for confirm password field
+        e.preventDefault();
+        setUsernameErrText("");
+        setPasswordErrText("");
+        setConfirmPasswordErrText("");
 
-        // get input values from form data
+        // Get form data
         const data = new FormData(e.target);
         const username = data.get("username").trim();
         const password = data.get("password").trim();
         const confirmPassword = data.get("confirmPassword").trim();
 
-        let err = false; // initialize error flag
-
-        // check if input values are valid
+        // Validate form data
+        let err = false;
         if (username === "") {
             err = true;
             setUsernameErrText("Please fill this field");
@@ -46,48 +44,44 @@ const Signup = () => {
             err = true;
             setConfirmPasswordErrText("Confirm password not match");
         }
+        if (err) return;
 
-        if (err) return; // if there are errors, return and do not submit form
-
-        setLoading(true); // set loading state to true
+        // Set loading state
+        setLoading(true);
 
         try {
-          // call signup API and get response
-          const res = await authApi.signup({
-            username: username, 
-            password: password, 
-            confirmPassword: confirmPassword
-          })
-          setLoading(false); // set loading state to false
-                localStorage.setItem("token", res.token); // save token to local storage
-                navigate("/"); // navigate to home page
+            // Attempt signup
+            const res = await authApi.signup({
+                username,
+                password,
+                confirmPassword,
+            });
+            setLoading(false);
 
-        
+            // Store token and navigate to home page
+            localStorage.setItem("token", res.token);
+            navigate("/");
         } catch (err) {
-          const errors = err.response.data.errors
-          errors.forEach(e => {
-            if (e.param === 'username') {
-              setUsernameErrText(e.msg)
-            }
-            if (e.param === 'password') {
-              setPasswordErrText(e.msg)
-            }
-            if (e.param === 'confirmPassword') {
-              setConfirmPasswordErrText(e.msg)
-            }
-          })
-          setLoading(false) // set loading state to false
+            // Handle errors
+            const errors = err.data.errors;
+            errors.forEach((e) => {
+                if (e.param === "username") {
+                    setUsernameErrText(e.msg);
+                }
+                if (e.param === "password") {
+                    setPasswordErrText(e.msg);
+                }
+                if (e.param === "confirmPassword") {
+                    setConfirmPasswordErrText(e.msg);
+                }
+            });
+            setLoading(false);
         }
     };
 
     return (
         <>
-            <Box
-                component="form"
-                sx={{ mt: 1 }}
-                onSubmit={handleSubmit}
-                noValidate // disable default form validation
-            >
+            <Box component="form" sx={{ mt: 1 }} onSubmit={handleSubmit} noValidate>
                 <TextField margin="normal" required fullWidth id="username" label="Username" name="username" disabled={loading} error={usernameErrText !== ""} helperText={usernameErrText} />
                 <TextField
                     margin="normal"

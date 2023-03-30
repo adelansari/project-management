@@ -9,63 +9,76 @@ import boardApi from "../../api/boardApi";
 import { setBoards } from "../../redux/features/boardSlice";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import FavouriteList from "./FavouriteList";
+import { useTheme } from "@mui/material/styles";
+import Divider from "@mui/material/Divider";
 
 const Sidebar = () => {
-    const user = useSelector((state) => state.user.value);
-    const boards = useSelector((state) => state.board.value);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const { boardId } = useParams();
-    const [activeIndex, setActiveIndex] = useState(0);
+    // Getting current theme mode from MUI theme
+    const theme = useTheme();
+    const themeMode = theme.palette.mode;
 
-    const sidebarWidth = 250;
+    // Accessing state values and hooks
+    const user = useSelector((state) => state.user.value); // Retrieving user data from Redux store
+    const boards = useSelector((state) => state.board.value); // Retrieving boards data from Redux store
+    const navigate = useNavigate(); // Navigation hook to change URL
+    const dispatch = useDispatch(); // Dispatch hook to dispatch actions
+    const { boardId } = useParams(); // Accessing boardId parameter from URL
+    const [activeIndex, setActiveIndex] = useState(0); // Initializing activeIndex state
+
+    const sidebarWidth = 300; // Setting sidebar width
 
     useEffect(() => {
+        // Fetching boards data from the API
         const getBoards = async () => {
             try {
-                const res = await boardApi.getAll();
-                dispatch(setBoards(res));
+                const res = await boardApi.getAll(); // API call to get all boards
+                dispatch(setBoards(res)); // Dispatching the setBoards action to update the Redux store with the new data
             } catch (err) {
                 alert(err);
             }
         };
-        getBoards();
+
+        getBoards(); // Calling the getBoards function when the component mounts or whenever the dispatch function changes
     }, [dispatch]);
 
     useEffect(() => {
-        const activeItem = boards.findIndex((e) => e.id === boardId);
+        // Handling changes to the boardId parameter
+        const activeItem = boards.findIndex((e) => e.id === boardId); // Finding the index of the active board
         if (boards.length > 0 && boardId === undefined) {
-            navigate(`/boards/${boards[0].id}`);
+            navigate(`/boards/${boards[0].id}`); // Navigating to the first board if there is no boardId parameter
         }
-        setActiveIndex(activeItem);
+        setActiveIndex(activeItem); // Setting the activeIndex state
     }, [boards, boardId, navigate]);
 
     const logout = () => {
-        localStorage.removeItem("token");
-        navigate("/login");
+        // Handling logout functionality
+        localStorage.removeItem("token"); // Removing the token from local storage
+        navigate("/login"); // Navigating to the login page
     };
 
     const onDragEnd = async ({ source, destination }) => {
-        const newList = [...boards];
-        const [removed] = newList.splice(source.index, 1);
-        newList.splice(destination.index, 0, removed);
+        // Handling drag and drop functionality
+        const newList = [...boards]; // Creating a new array with the current board data
+        const [removed] = newList.splice(source.index, 1); // Removing the dragged board from the array
+        newList.splice(destination.index, 0, removed); // Inserting the dragged board at the new position
 
-        const activeItem = newList.findIndex((e) => e.id === boardId);
-        setActiveIndex(activeItem);
-        dispatch(setBoards(newList));
+        const activeItem = newList.findIndex((e) => e.id === boardId); // Finding the index of the active board in the new array
+        setActiveIndex(activeItem); // Setting the activeIndex state
+        dispatch(setBoards(newList)); // Dispatching the setBoards action to update the Redux store with the new array
 
         try {
-            await boardApi.updatePositoin({ boards: newList });
+            await boardApi.updatePositoin({ boards: newList }); // API call to update the position of the boards
         } catch (err) {
             alert(err);
         }
     };
 
     const addBoard = async () => {
+        // Handling board creation functionality
         try {
-            const res = await boardApi.create();
-            const newList = [res, ...boards];
-            dispatch(setBoards(newList));
+            const res = await boardApi.create(); // API call to create a new board
+            const newList = [res, ...boards]; // Creating a new array with the new board added at the beginning
+            dispatch(setBoards(newList)); // Dispatching the setBoards action to update
             navigate(`/boards/${res.id}`);
         } catch (err) {
             alert(err);
@@ -76,6 +89,7 @@ const Sidebar = () => {
         <Drawer
             container={window.document.body}
             variant="permanent"
+            anchor="right"
             open={true}
             sx={{
                 width: sidebarWidth,
@@ -88,7 +102,7 @@ const Sidebar = () => {
                 sx={{
                     width: sidebarWidth,
                     height: "100vh",
-                    backgroundColor: assets.colors.secondary,
+                    backgroundColor: themeMode === "dark" ? assets.colors.secondary : assets.colors.primary,
                 }}
             >
                 <ListItem>
@@ -98,16 +112,24 @@ const Sidebar = () => {
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "space-between",
+                            border: 2,
+                            borderRadius: 2,
+                            borderColor: "primary.main",
+                            p: 2,
                         }}
                     >
-                        <Typography variant="body2" fontWeight="700">
-                            {user.username}
-                        </Typography>
+                        <Box>
+                            <img src={themeMode === "dark" ? assets.images.logoDark : assets.images.logoLight} style={{ width: "100px" }} alt="app logo" />
+                            <Typography variant="h6" fontWeight="700">
+                                User: {user.username}
+                            </Typography>
+                        </Box>
                         <IconButton onClick={logout}>
-                            <LogoutOutlinedIcon fontSize="small" />
+                            <LogoutOutlinedIcon fontSize="large" />
                         </IconButton>
                     </Box>
                 </ListItem>
+                <Divider />
                 <Box sx={{ paddingTop: "10px" }} />
                 <FavouriteList />
                 <Box sx={{ paddingTop: "10px" }} />

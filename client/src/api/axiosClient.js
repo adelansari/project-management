@@ -1,41 +1,43 @@
 import axios from "axios";
 import queryString from "query-string";
 
-// Base URL for the API
-const baseUrl = "http://127.0.0.1:5000/api/v1/";
-
-// Function to get the bearer token from local storage
+const baseURL = "http://127.0.0.1:5000/api/v1/";
 const getToken = () => localStorage.getItem("token");
 
-// Create a new Axios client with some default settings
+// Create a new instance of axios with baseURL and paramsSerializer options
 const axiosClient = axios.create({
-    baseURL: baseUrl, // Set the base URL for all requests
-    paramsSerializer: (params) => queryString.stringify({ params }), // Serialize query params
+    baseURL: baseURL,
+    paramsSerializer: (params) => queryString.stringify(params),
 });
 
-// Add an interceptor to add the authorization header to all requests
+// Add an interceptor to add authorization header to all requests
 axiosClient.interceptors.request.use((config) => {
+    // Get the token from local storage
     const token = getToken();
+    // If token exists, add it to headers
     if (token) {
-        config.headers["authorization"] = `Bearer ${token}`;
+        config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
 });
 
-// Add an interceptor to the response to return only the data if it exists
+// Add an interceptor to transform response data before returning it
 axiosClient.interceptors.response.use(
     (response) => {
-        // Extract the response data from the Axios response object
-        if (response && response.data) return response.data;
+        // If response contains data, return only the data
+        if (response && response.data) {
+            return response.data;
+        }
         return response;
     },
     (error) => {
-        // Handle errors by alerting if there is no response or throwing the error response
+        // If there is no response, show alert
         if (!error.response) {
-            return alert(error);
+            alert(error);
+            return Promise.reject(error);
         }
-        // Handle HTTP errors
-        throw error.response;
+        // Otherwise, throw error response
+        return Promise.reject(error.response);
     }
 );
 

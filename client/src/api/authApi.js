@@ -1,27 +1,13 @@
 import axiosClient from "./axiosClient";
 
-/**
- * Provides methods to interact with the authentication API.
- */
+// define an object that holds functions to interact with authentication API endpoints
 const authApi = {
-    /**
-     * Registers a new user with the given information.
-     * @param {object} params - An object containing the user's username, password, and confirmPassword.
-     * @returns {Promise} A Promise that resolves with the response data or rejects with an error.
-     */
+    // the signup function makes a POST request to the auth/signup endpoint with provided params
     signup: (params) => axiosClient.post("auth/signup", params),
-
-    /**
-     * Logs in a user with the given username and password.
-     * @param {object} params - An object containing the user's username and password.
-     * @returns {Promise} A Promise that resolves with the response data or rejects with an error.
-     */
+    // the login function makes a POST request to the auth/login endpoint with provided params
     login: (params) => axiosClient.post("auth/login", params),
-
-    /**
-     * Verifies the user's access token.
-     * @returns {Promise} A Promise that resolves with the response data or rejects with an error.
-     */
+    // the verifyToken function makes a POST request to the auth/verify-token endpoint
+    // this endpoint does not require any parameters to be passed in
     verifyToken: () => axiosClient.post("auth/verify-token"),
 };
 
