@@ -1,9 +1,12 @@
+// Define options for Mongoose schemas
 exports.schemaOptions = {
+    // Include virtual properties when converting a document to JSON or an object
     toJSON: {
-      virtuals: true
+        virtuals: true,
     },
     toObject: {
-      virtuals: true
+        virtuals: true,
     },
-    timestamp: true
-  }
+    // Automatically add createdAt and updatedAt timestamps to documents
+    timestamp: true,
+};

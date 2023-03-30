@@ -5,7 +5,7 @@ const assets = {
     appIcon: require('./images/favicon.png')
   },
   colors: {
-    primary: '#bcabed',   // for light theme
+    primary: '#cad3db',   // for light theme
     secondary: '#001d2e'  // for dark theme
   }
 }

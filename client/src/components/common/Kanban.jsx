@@ -204,9 +204,22 @@ const Kanban = (props) => {
                                                 variant="outlined"
                                                 sx={{
                                                     flexGrow: 1,
+                                                    // Remove padding from input
                                                     "& .MuiOutlinedInput-input": { padding: 0 },
+                                                    // Remove border from input
                                                     "& .MuiOutlinedInput-notchedOutline": { border: "unset " },
-                                                    "& .MuiOutlinedInput-root": { fontSize: "1rem", fontWeight: "700" },
+                                                    "& .MuiOutlinedInput-root": {
+                                                        fontSize: "1rem",
+                                                        fontWeight: "700",
+                                                        // Add transition for box-shadow and background-color
+                                                        transition: "box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out",
+                                                    },
+                                                    // Add styles for when the input is focused
+                                                    "& .MuiOutlinedInput-root.Mui-focused": {
+                                                        boxShadow: "0 0 15px #03a9f4",
+                                                        backgroundColor: "#f5f5f5",
+                                                        color: "black",
+                                                    },
                                                 }}
                                             />
                                             <IconButton
@@ -214,7 +227,7 @@ const Kanban = (props) => {
                                                 size="small"
                                                 sx={{
                                                     color: "gray",
-                                                    "&:hover": { color: "green" },
+                                                    "&:hover": { color: "green", boxShadow: "0 0 15px green" },
                                                 }}
                                                 onClick={() => createTask(section.id)}
                                             >
@@ -225,7 +238,10 @@ const Kanban = (props) => {
                                                 size="small"
                                                 sx={{
                                                     color: "gray",
-                                                    "&:hover": { color: "red" },
+                                                    "&:hover": {
+                                                        color: "red",
+                                                        boxShadow: "0 0 15px red",
+                                                    },
                                                 }}
                                                 onClick={() => deleteSection(section.id)}
                                             >
@@ -244,6 +260,14 @@ const Kanban = (props) => {
                                                             padding: "10px",
                                                             marginBottom: "10px",
                                                             cursor: snapshot.isDragging ? "grab" : "pointer!important",
+                                                            boxShadow: snapshot.isDragging ? "0 0 15px #03a9f4" : "none",
+                                                            backgroundColor: snapshot.isDragging ? "#03a9f4" : "inherit",
+                                                            color: snapshot.isDragging ? "#fff" : "inherit",
+                                                            ":hover": {
+                                                                boxShadow: "0 0 15px #03a9f4",
+                                                                backgroundColor: "#03a9f4",
+                                                                color: "#fff",
+                                                            },
                                                         }}
                                                         onClick={() => setSelectedTask(task)}
                                                     >

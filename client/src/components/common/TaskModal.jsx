@@ -25,7 +25,8 @@ const Backdrop = styled("div")`
     bottom: 0;
     top: 0;
     left: 0;
-    background-color: rgb(192,192,192);opacity:0.6;
+    background-color: rgb(192, 192, 192);
+    opacity: 0.6;
     -webkit-tap-highlight-color: transparent;
 `;
 
@@ -165,6 +166,41 @@ const TaskModal = (props) => {
         }
     };
 
+    // Defining a custom upload adapter
+    class MyUploadAdapter {
+        constructor(loader) {
+            // The file loader instance to use during the upload.
+            this.loader = loader;
+        }
+
+        // Starts the upload process.
+        upload() {
+            return this.loader.file.then(
+                (file) =>
+                    new Promise((resolve, reject) => {
+                        // Here you can upload the file to your server and return the URL of the uploaded file
+                        // For example:
+                        const data = new FormData();
+                        data.append("file", file);
+
+                        fetch("/api/upload", {
+                            method: "POST",
+                            body: data,
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                resolve({
+                                    default: data.url,
+                                });
+                            })
+                            .catch((error) => {
+                                reject(error);
+                            });
+                    })
+            );
+        }
+    }
+
     return (
         // Using Modal component from Material UI
         <StyledModal
@@ -216,9 +252,22 @@ const TaskModal = (props) => {
                             fullWidth
                             sx={{
                                 width: "100%",
+                                // Remove padding from input
                                 "& .MuiOutlinedInput-input": { padding: 0 },
+                                // Remove border from input
                                 "& .MuiOutlinedInput-notchedOutline": { border: "unset " },
-                                "& .MuiOutlinedInput-root": { fontSize: "2.5rem", fontWeight: "700" },
+                                "& .MuiOutlinedInput-root": {
+                                    fontSize: "2.5rem",
+                                    fontWeight: "700",
+                                    // Add transition for box-shadow and background-color
+                                    transition: "box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out",
+                                },
+                                // Add styles for when the input is focused
+                                "& .MuiOutlinedInput-root.Mui-focused": {
+                                    boxShadow: "0 0 15px #03a9f4",
+                                    backgroundColor: "#f5f5f5",
+                                    color: "black",
+                                },
                                 marginBottom: "10px",
                             }}
                         />
@@ -239,7 +288,17 @@ const TaskModal = (props) => {
                             }}
                         >
                             {/* Using CKEditor component for rich text editing */}
-                            <CKEditor editor={ClassicEditor} data={content} onChange={updateContent} onFocus={updateEditorHeight} onBlur={updateEditorHeight} />
+                            <CKEditor
+                                editor={ClassicEditor}
+                                data={content}
+                                onChange={updateContent}
+                                onFocus={updateEditorHeight}
+                                onBlur={updateEditorHeight}
+                                onReady={(editor) => {
+                                    // Adding custom upload adapter when editor is ready
+                                    editor.plugins.get("FileRepository").createUploadAdapter = (loader) => new MyUploadAdapter(loader);
+                                }}
+                            />
                         </Box>
                     </Box>
                 </Box>

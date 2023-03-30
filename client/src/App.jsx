@@ -19,49 +19,49 @@ import Tooltip from "@mui/material/Tooltip";
 function App() {
     // Defining state variable for theme mode
     const [themeMode, setThemeMode] = useState("dark");
-
+  
     // Creating MUI theme with current theme mode
     const theme = createTheme({
-        palette: { mode: themeMode },
+      palette: { mode: themeMode },
     });
-
+  
     // Function to handle toggling of theme mode
     const handleThemeToggle = () => {
-        setThemeMode((prevThemeMode) => (prevThemeMode === "dark" ? "light" : "dark"));
+      setThemeMode((prevThemeMode) => (prevThemeMode === "dark" ? "light" : "dark"));
     };
-
+  
     return (
-        <ThemeProvider theme={theme}>
-            <CssBaseLine />
-            <Box
-                sx={{
-                    position: "fixed",
-                    top: 0,
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    zIndex: 9999,
-                    margin: "1rem",
-                }}
-            >
-                <Tooltip title="Toggle Theme">
-                    <Button onClick={handleThemeToggle}>Light 🌞/ Dark 🌚</Button>
-                </Tooltip>
-            </Box>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<AuthLayout />}>
-                        <Route path="login" element={<Login />} />
-                        <Route path="signup" element={<Signup />} />
-                    </Route>
-                    <Route path="/" element={<AppLayout />}>
-                        <Route index element={<Home />} />
-                        <Route path="boards" element={<Home />} />
-                        <Route path="boards/:boardId" element={<Board />} />
-                    </Route>
-                </Routes>
-            </BrowserRouter>
-        </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseLine />
+        <Box
+          sx={{
+            position: "fixed",
+            top: 0,
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 9999,
+            margin: "1rem",
+          }}
+        >
+          <Tooltip title="Toggle Theme">
+            <Button onClick={handleThemeToggle}>Light 🌞/ Dark 🌚</Button>
+          </Tooltip>
+        </Box>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<AuthLayout />}>
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<Signup />} />
+            </Route>
+            <Route path="/" element={<AppLayout />}>
+              <Route index element={<Home />} />
+              <Route path="boards" element={<Home />} />
+              <Route path="boards/:boardId" element={<Board />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
     );
-}
-
-export default App;
+  }
+  
+  export default App;

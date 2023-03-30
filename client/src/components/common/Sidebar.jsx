@@ -11,6 +11,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import FavouriteList from "./FavouriteList";
 import { useTheme } from "@mui/material/styles";
 import Divider from "@mui/material/Divider";
+import Tooltip from "@mui/material/Tooltip";
 
 const Sidebar = () => {
     // Getting current theme mode from MUI theme
@@ -124,9 +125,11 @@ const Sidebar = () => {
                                 User: {user.username}
                             </Typography>
                         </Box>
-                        <IconButton onClick={logout}>
-                            <LogoutOutlinedIcon fontSize="large" />
-                        </IconButton>
+                        <Tooltip title="Logout">
+                            <IconButton onClick={logout} style={{ color: "red", boxShadow: "0 0 15px white"}}>
+                                <LogoutOutlinedIcon fontSize="large" />
+                            </IconButton>
+                        </Tooltip>
                     </Box>
                 </ListItem>
                 <Divider />

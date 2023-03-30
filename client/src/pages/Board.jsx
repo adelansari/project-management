@@ -186,9 +186,9 @@ const Board = () => {
                 }}
             >
                 <Tooltip title="Add to Favorite">
-                <IconButton variant="outlined" onClick={addFavourite}>
-                    {isFavourite ? <StarOutlinedIcon color="warning" /> : <StarBorderOutlinedIcon />}
-                </IconButton>
+                    <IconButton variant="outlined" onClick={addFavourite}>
+                        {isFavourite ? <StarOutlinedIcon color="warning" /> : <StarBorderOutlinedIcon />}
+                    </IconButton>
                 </Tooltip>
 
                 <Tooltip title="Delete Project">
@@ -208,9 +208,22 @@ const Board = () => {
                         variant="outlined"
                         fullWidth
                         sx={{
+                            // Remove padding from input
                             "& .MuiOutlinedInput-input": { padding: 0 },
+                            // Remove border from input
                             "& .MuiOutlinedInput-notchedOutline": { border: "unset " },
-                            "& .MuiOutlinedInput-root": { fontSize: "2rem", fontWeight: "700" },
+                            "& .MuiOutlinedInput-root": {
+                                fontSize: "2rem",
+                                fontWeight: "700",
+                                // Add transition for box-shadow and background-color
+                                transition: "box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out",
+                            },
+                            // Add styles for when the input is focused
+                            "& .MuiOutlinedInput-root.Mui-focused": {
+                                boxShadow: "0 0 15px #03a9f4",
+                                backgroundColor: "#f5f5f5",
+                                color: "black",
+                            },
                         }}
                     />
                     <TextField
@@ -221,9 +234,21 @@ const Board = () => {
                         multiline
                         fullWidth
                         sx={{
+                            // Remove padding from input
                             "& .MuiOutlinedInput-input": { padding: 0 },
+                            // Remove border from input
                             "& .MuiOutlinedInput-notchedOutline": { border: "unset " },
-                            "& .MuiOutlinedInput-root": { fontSize: "0.8rem" },
+                            "& .MuiOutlinedInput-root": {
+                                fontSize: "0.8rem",
+                                // Add transition for box-shadow and background-color
+                                transition: "box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out",
+                            },
+                            // Add styles for when the input is focused
+                            "& .MuiOutlinedInput-root.Mui-focused": {
+                                boxShadow: "0 0 15px #03a9f4",
+                                backgroundColor: "#f5f5f5",
+                                color: "black",
+                            },
                         }}
                     />
                 </Box>
