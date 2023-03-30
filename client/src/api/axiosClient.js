@@ -2,7 +2,7 @@ import axios from "axios";
 import queryString from "query-string";
 
 // const baseURL = "http://127.0.0.1:5000/api/v1/"; // for local testing
-const baseURL = "http://project-management-api.vercel.app/api/v1/";
+const baseURL = "https://project-management-api.vercel.app/api/v1/";
 const getToken = () => localStorage.getItem("token");
 
 // Create a new instance of axios with baseURL and paramsSerializer options
