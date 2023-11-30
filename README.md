@@ -1,7 +1,38 @@
-# Project Management System- Kanban Boards
+<div align="center">
+<h2>◦ Project Management ◦</h2>
+<h1 align="center">
+<img src="./assets/Avatar.png" width="300" />
+<br>
+</h1>
+
+<h5 align="left">Front-End:</h5>
+<p align="center">
+<img src="https://img.shields.io/badge/React-v18.2.0-gray?logo=react&logoColor=white&labelColor=61DAFB" alt="React" />
+<img src="https://img.shields.io/badge/TypeScript-v5.2.2-gray?logo=TypeScript&logoColor=white&labelColor=blue" alt="TypeScript" />
+<img src="https://img.shields.io/badge/Material%20UI-v5.8.6-gray?logo=material-ui&logoColor=white&labelColor=0081CB" alt="Material UI" />
+<img src="https://img.shields.io/badge/React%20Beautiful%20DND-v13.1.0-gray?logo=react-beautiful-dnd&logoColor=white&labelColor=FF4785" alt="React Beautiful DND" />
+<img src="https://img.shields.io/badge/React%20Redux-v8.0.2-gray?logo=react-redux&logoColor=white&labelColor=764ABC" alt="React Redux" />
+<img src="https://img.shields.io/badge/React%20Router-v6.3.0-gray?logo=react-router&logoColor=white&labelColor=CA4245" alt="React Router" />
+<img src="https://img.shields.io/badge/CKEditor-v34.2.0-gray?logo=ckeditor&logoColor=white&labelColor=1DABE2" alt="CKEditor" />
+<img src="https://img.shields.io/badge/Emoji%20Mart-v3.0.1-gray?logo=emoji-mart&logoColor=white&labelColor=FCEA2B" alt="Emoji Mart" />
+<img src="https://img.shields.io/badge/Axios-v0.27.2-gray?logo=axios&logoColor=white&labelColor=671DDF" alt="Axios" />
+</p>
+
+<h5 align="left">Back-End and Other Tools:</h5>
+<p align="center">
+<img src="https://img.shields.io/badge/Express-v4.18.2-gray?logo=express&logoColor=white&labelColor=000000" alt="Express" />
+<img src="https://img.shields.io/badge/MongoDB-v6.3.0-gray?logo=mongodb&logoColor=white&labelColor=47A248" alt="MongoDB" />
+<img src="https://img.shields.io/badge/Mongoose-v7.0.3-gray?logo=mongoose&logoColor=white&labelColor=880000" alt="Mongoose" />
+<img src="https://img.shields.io/badge/JSON%20Web%20Token-v9.0.0-gray?logo=json-web-tokens&logoColor=white&labelColor=000000" alt="JSON Web Token" />
+<img src="https://img.shields.io/badge/CryptoJS-v4.1.1-gray?logo=crypto-js&logoColor=white&labelColor=FF9900" alt="CryptoJS" />
+<img src="https://img.shields.io/badge/Nodemon-v2.0.22-gray?logo=nodemon&logoColor=white&labelColor=76D04B" alt="Nodemon" />
+</p>
+</div>
 
 ## Overview
 This web-based application is designed for project management, featuring user authentication, board, section, and task management. It uses React for the frontend and Express.js with MongoDB for the backend.
+![video](./assets/ProjectPreview.mp4)
+
 
 #### Technologies Used
 - Frontend: React, Redux, Material-UI
@@ -22,6 +53,47 @@ This web-based application is designed for project management, featuring user au
 - **Section Handling**:
   - Group tasks into sections for better organization. Manage tasks within sections.
   - Create, update, and delete sections within boards.
+- **Animation and visuals <3**
+
+
+### File Structure
+#### Client-Side (React)
+
+- **Main Entry**: `client/src/App.jsx` - Main application component.
+- **Components**: `components/` - Reusable components.
+  - Common Components: `EmojiPicker`, `FavouriteList`, `Kanban`, `Loading`, `Sidebar`, `TaskModal`.
+  - Layout Components: `AppLayout`, `AuthLayout`.
+- **Pages**:  `pages/` - redux Pages like Home, Board, Login, and Signup.
+  - `Home.jsx` - The homepage of the application.
+  - `Board.jsx` - For managing and viewing boards.
+  - `Login.jsx` and `Signup.jsx` - Authentication pages.
+- **Redux**: Centralized state and logic 
+  - `boardSlice.js`, `favouriteSlice.js`, `userSlice.js` - Redux slices for state management.
+  - `store.js` - The Redux store configuration.
+- **API Calls**: `api/` - API calls for authentication, boards, sections, and tasks.
+  - `authApi.js`, `boardApi.js`, `sectionApi.js`, `taskApi.js` - API services for handling HTTP requests.
+- **Utilities**: `authUtils.js` - Utility functions related to authentication.
+- **Assets and Styles**: Images and CSS files for customizing the appearance.
+
+#### Server-Side (Node.js)
+
+- **Main Entry**: `server/app.js`, `server/bin/www.js` - The starting point of the Node.js server.
+- **Controllers**: `controllers/` -  Controllers for boards, sections, tasks, and users.
+  - `board.js`, `section.js`, `task.js`, `uploadController.js`, `user.js` - Controllers for handling business logic.
+- **Models**: `models/` -  Mongoose models for boards, sections, tasks, and users.
+  - `board.js`, `section.js`, `task.js`, `user.js` - Mongoose models for database interactions.
+- **Routes**: `routes/` -  Express routes for handling API requests.
+  - `auth.js`, `board.js`, `section.js`, `task.js`, `upload.js` - Routes for handling API requests.
+- **Middleware and Handlers**: `tokenHandler.js`, `validation.js` - Middleware for token handling and request validation.
+
+
+#### Configuration and Documentation
+
+- **Environment**: 
+  - `.env.Example` - Template for environment variables.
+- **Package Management**: 
+  - `package.json` and `yarn.lock` files for dependency management.
+
 
 
 ## Getting Started
@@ -72,9 +144,15 @@ This web-based application is designed for project management, featuring user au
 
 ## Usage
 - **Login/Signup**: Create an account or log in to access the dashboard.
-- **Creating Boards**: Manage different projects or aspects of your work.
+  ![login](./assets/login.png)
+- **Creating Boards/Projects**: Manage different projects or aspects of your work.
+  ![creaingBoard](assets/CreatingProjects.png)
+- **Adding Secion**: Add multiple section to manage different tasks and progress.
+  ![creaingSection](assets/addSection.jpg)
 - **Adding Tasks**: Break down your work into manageable tasks.
-- **Organizing Sections**: Group related tasks for better clarity.
+  ![creaingTask](assets/addTask.jpg)
+- **Organizing Tasks**: Drag/Drop and group tasks for better clarity.
+  ![DragDropTask](assets/DragDropTask.jpg)
 
 ## Contributing
 Contributions to the Project Management System are welcome! Please follow these steps:

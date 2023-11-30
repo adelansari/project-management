@@ -1,13 +1,13 @@
 const assets = {
   images: {
-    logoLight: require('./images/logoLight.png'),
-    logoDark: require('./images/logoDark.png'),
-    appIcon: require('./images/favicon.png')
+    logoLight: require("./images/logoLight.png"),
+    logoDark: require("./images/logoDark.png"),
+    appIcon: require("./images/favicon.png"),
   },
   colors: {
-    primary: '#cad3db',   // for light theme
-    secondary: '#001d2e'  // for dark theme
-  }
-}
+    primary: "#e4e4e4", // for light theme
+    secondary: "#2B2B2B", // for dark theme
+  },
+};
 
-export default assets
+export default assets;
