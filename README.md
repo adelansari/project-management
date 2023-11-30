@@ -31,7 +31,7 @@
 
 ## Overview
 This web-based application is designed for project management, featuring user authentication, board, section, and task management. It uses React for the frontend and Express.js with MongoDB for the backend.
-![video](./assets/ProjectPreview.mp4)
+![video](./assets/ProjectGO.gif)
 
 
 #### Technologies Used
